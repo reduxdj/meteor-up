@@ -53,79 +53,26 @@ This version of Meteor Up is powered by [Docker](http://www.docker.com/) and it 
 * Pre-Installed PhantomJS
 
 ### Installation
+    first uninstall any previous version of mupx
+    sudo npm -g uninstall mupx
+    git checkout -b mupx remotes/origin/mupx
+    sudo npm install -g mupx
+    sudo npm link
 
-    npm install -g mupx
+    To install your own custom docker image, update the templates/linux/start.sh script to pull your own docker image
+    from your Repo
 
-### Creating a Meteor Up Project
-
-    mkdir ~/my-meteor-deployment
-    cd ~/my-meteor-deployment
-    mupx init
-
-This will create two files in your Meteor Up project directory:
-
-  * mup.json - Meteor Up configuration file
-  * settings.json - Settings for Meteor's [settings API](http://docs.meteor.com/#meteor_settings)
-
-`mup.json` is commented and easy to follow (it supports JavaScript comments).
-
-### Example File
-
-```js
-{
-  // Server authentication info
-  "servers": [
-    {
-      "host": "hostname",
-      "username": "root",
-      "password": "password",
-      // or pem file (ssh based authentication)
-      // WARNING: Keys protected by a passphrase are not supported
-      //"pem": "~/.ssh/id_rsa"
-      // Also, for non-standard ssh port use this
-      //"sshOptions": { "port" : 49154 },
-      // server specific environment variables
-      "env": {}
-    }
-  ],
-
-  // Install MongoDB on the server. Does not destroy the local MongoDB on future setups
-  "setupMongo": true,
-
-  // Application name (no spaces).
-  "appName": "meteor",
-
-  // Location of app (local directory). This can reference '~' as the users home directory.
-  // i.e., "app": "~/Meteor/my-app",
-  // This is the same as the line below.
-  "app": "/Users/arunoda/Meteor/my-app",
-
-  // Configure environment
-  // ROOT_URL must be set to your correct domain (https or http)
-  "env": {
-    "PORT": 80,
-    "ROOT_URL": "http://myapp.com"
-  },
-
-  // Meteor Up checks if the app comes online just after the deployment.
-  // Before mup checks that, it will wait for the number of seconds configured below.
-  "deployCheckWaitTime": 15,
-
-  // show a progress bar while uploading.
-  // Make it false when you deploy using a CI box.
-  "enableUploadProgressBar": true
-}
-```
+    Follow the insructions from the readme our project
 
 ### Setting Up a Server
 
-    mupx setup
+    See the readme file in the project, which explains the following
+
+    DEBUG=* mupx setup --config=mup_docker.json
 
 This will setup the server for the `mupx` deployments. It will take around 2-5 minutes depending on the server's performance and network availability.
 
-### Deploying an App
-
-    mupx deploy
+    DEBUG=* mupx deploy --config=mup_docker.json
 
 This will bundle the Meteor project and deploy it to the server. Bundling process is very similar to how `meteor deploy` do it.
 
@@ -200,7 +147,7 @@ And you also need to add NOPASSWD to the sudoers file:
     %sudo  ALL=(ALL) ALL
 
     # by this line
-    %sudo ALL=(ALL) NOPASSWD:ALL  
+    %sudo ALL=(ALL) NOPASSWD:ALL
 
 When this process is not working you might encounter the following error:
 
